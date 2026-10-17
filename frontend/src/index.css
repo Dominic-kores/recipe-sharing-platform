@@ -1,0 +1,24 @@
+
+/* Load Tailwind CSS utilities. */
+@import "tailwindcss";
+
+/* Global application styles. */
+body {
+  margin: 0;
+  min-width: 320px;
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Make controls use the inherited font. */
+button,
+input,
+select {
+  font: inherit;
+}
+
+/* Indicate when elements are interactive. */
+button {
+  cursor: pointer;
+}

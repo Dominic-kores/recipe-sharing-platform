@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+
+ // Generate the Prisma Client used to query PostgreSQL.
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Database connection configuration.
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Each user can publish multiple recipes.
+model User {
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String     @unique
+  bio       String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  // One-to-many relationship.
+  recipes   Recipe[]
+
+  // Optional stretch relationships.
+  favorites Favorite[]
+  ratings   Rating[]
+}
+
+// Each recipe belongs to one user.
+model Recipe {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  prepTime    Int
+  cookTime    Int
+  servings    Int      @default(4)
+  difficulty  String   @default("medium")
+  category    String
+
+  // Store ingredients and instructions as JSON.
+  ingredients Json
+  steps       Json
+
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Foreign key relationship to the author.
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    Int
+
+  favorites   Favorite[]
+  ratings     Rating[]
+}
+
+// Optional: users can save recipes to favorites.
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  recipe    Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId  Int
+  createdAt DateTime @default(now())
+
+  // Prevent duplicate favorites.
+  @@unique([userId, recipeId])
+}
+
+// Optional: users can rate recipes from 1 to 5.
+model Rating {
+  id       Int    @id @default(autoincrement())
+  value    Int
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   Int
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId Int
+
+  // Each user can rate a recipe once.
+  @@unique([userId, recipeId])
+}
+
