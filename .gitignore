@@ -4,6 +4,5 @@
 .env.development
 .env.test
 .env.production
-.env.example
-
+!.env.example
 .DS_Store
