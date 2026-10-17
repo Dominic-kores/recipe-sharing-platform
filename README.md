@@ -402,7 +402,7 @@ A successful request should return HTTP `201 Created`, provided the author exist
 4. Add `VITE_API_BASE_URL` pointing to the Railway API.
 5. Deploy the application.
 
-**Frontend URL:** []
+**Frontend URL:** [https://recipe-sharing-platform-kedroaxpo-dkisioya-7099.vercel.app/]
 
 
 ---
