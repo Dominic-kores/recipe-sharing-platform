@@ -1,0 +1,9 @@
+.vscode/
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.example
+
+.DS_Store
